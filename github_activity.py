@@ -74,11 +74,27 @@ def main():
         )
         sys.exist(1)
 
-        events = json.loads(raw_json_string)
+    events = json.loads(raw_json_string)
 
     if not events:
         print(f"No recent public activity found for user '{username}'.")
         sys.exit(0)
+
+    print("\nRecent Activity:")
+    for event in events[:10]:
+        event_type = event.get("type")
+        repo_name = event.get("repo", {}).get("name", "Unknown repository")
+
+        if event_type == "PushEvent":
+            commits_count = len(event.get("payload", {}).get("action", "modifies"))
+            print(f"- Pushed {commits_count} commit(s) to {repo_name}")
+
+        elif event_type == "IssuesEvent":
+            action = event.get("payload", {}).get("action", "modified")
+            print(f"- {action.capitalize()} an issue in {repo_name}")
+
+        elif event_type == "WatchEvent":
+            print(f"- Started {repo_name}")
 
 
 if __name__ == "__main__":
