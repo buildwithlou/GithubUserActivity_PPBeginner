@@ -1,3 +1,4 @@
+import json
 import sys
 import urllib.error
 import urllib.request
@@ -72,6 +73,12 @@ def main():
             "Error: Failed to connect to Github. Please check your internet connection."
         )
         sys.exist(1)
+
+        events = json.loads(raw_json_string)
+
+    if not events:
+        print(f"No recent public activity found for user '{username}'.")
+        sys.exit(0)
 
 
 if __name__ == "__main__":
