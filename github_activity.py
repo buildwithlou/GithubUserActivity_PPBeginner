@@ -50,6 +50,28 @@ def main():
         print("Error: Failed to connect to the internet or Github servers.")
         sys.exit(1)
 
+    try:
+        # Attempt to reach Github
+        with urllib.request.urlopen(req) as response:
+            raw_json_String = response.read().decode("utf-8")
+            print(f"Successfully fetched activity for {username}")
+
+    except urllib.error.HTTPError as e:
+        if e.code == 404:
+            print(f"Error: The user '{username}' was not found on GitHub.")
+        elif e.code == 403:
+            print("Error: Access forbidden. You might be rate-limited by Github.")
+        else:
+            print(f"Error: Github API returned status code {e.code}")
+        sys.exit(1)
+
+    except urllib.error.URLError:
+        # just in case the internet is down or the URL is unreacheable
+        print(
+            "Error: Failed to connect to Github. Please check your internet connection."
+        )
+        sys.exist(1)
+
 
 if __name__ == "__main__":
     main()
