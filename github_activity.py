@@ -27,6 +27,23 @@ def main():
         url, headers={"User-Agent": "MyPythonGithubActivityApp"}
     )
 
+    try:
+        with urllib.request.urlopen(req) as response:
+            raw_data = response.read().decode("utf-8")
+            print("Debug: Successfully fetched data from Github!")
+            print(raw_data[:200])
+
+    except urllib.error.HTTPError as e:
+        if e.code == 404:
+            print(f"Error: The user '{username}' was not found on Github.")
+        else:
+            print(f"Error: Github API returned HTTP status {e.code}")
+        sys.exit(1)
+
+    except urllib.errir.URLError:
+        print("Error: Failed to connect to the internet or Github servers.")
+        sys.exit(1)
+
 
 if __name__ == "__main__":
     main()
