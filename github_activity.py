@@ -19,13 +19,19 @@ def main():
         sys.exit(1)
 
     # 3. For now, just print a success message to verify it works
-    print(f"Debug: Successfully captured username: {username}")
+    # print(f"Debug: Successfully captured username: {username}")
 
     url = f"https://api.github.com/users/{username}/events"
 
     req = urllib.request.Request(
         url, headers={"User-Agent": "MyPythonGithubActivityApp"}
     )
+
+    with urllib.request.urlopen(req) as response:
+        raw_json_string = response.read().decode("utf-8")
+
+    print("Successfully connected! Here is a preview of what Github sent:")
+    print(raw_json_string[:300])
 
     try:
         with urllib.request.urlopen(req) as response:
