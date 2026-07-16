@@ -1,4 +1,6 @@
 import sys
+import urllib.error
+import urllib.request
 
 
 def main():
@@ -18,6 +20,12 @@ def main():
 
     # 3. For now, just print a success message to verify it works
     print(f"Debug: Successfully captured username: {username}")
+
+    url = f"https://api.github.com/users/{username}/events"
+
+    req = urllib.request.Request(
+        url, headers={"User-Agent": "MyPythonGithubActivityApp"}
+    )
 
 
 if __name__ == "__main__":
