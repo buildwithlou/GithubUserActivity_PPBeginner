@@ -53,8 +53,9 @@ def main():
     try:
         # Attempt to reach Github
         with urllib.request.urlopen(req) as response:
-            raw_json_String = response.read().decode("utf-8")
-            print(f"Successfully fetched activity for {username}")
+            raw_json_string = response.read().decode("utf-8")
+        print(f"Successfully fetched activity for {username}")
+        print(raw_json_string[:300])
 
     except urllib.error.HTTPError as e:
         if e.code == 404:
